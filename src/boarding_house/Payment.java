@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package boarding_house;
+import java.sql.*;
+import javax.swing.*;
 
 /**
  *
@@ -16,6 +18,19 @@ public class Payment extends javax.swing.JFrame {
      */
     public Payment() {
         initComponents();
+        loadTenantsToComboBox();
+        loadPaymentsTable();
+        // Hide Payment ID
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setWidth(0);
+
+        // We need to hide the Tenant id in thhe ui and only work it on the backend
+        jTable1.getColumnModel().getColumn(1).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(1).setWidth(0);
+
+        jTextField1.setEditable(false);
     }
 
     /**
@@ -27,22 +42,727 @@ public class Payment extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnDasboard = new javax.swing.JButton();
+        btnTenants = new javax.swing.JButton();
+        btnRooms = new javax.swing.JButton();
+        btnPayments = new javax.swing.JButton();
+        btnlogout = new javax.swing.JButton();
+        btnHistory1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jTextField3 = new javax.swing.JTextField();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton5 = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ben.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 102, 255));
+        jLabel2.setText("BOARDING HOUSE");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Management System");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 230, 20));
+
+        btnDasboard.setBackground(new java.awt.Color(255, 204, 255));
+        btnDasboard.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDasboard.setForeground(new java.awt.Color(102, 0, 102));
+        btnDasboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home (2).png"))); // NOI18N
+        btnDasboard.setText("Dashboard");
+        btnDasboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnDasboard.setIconTextGap(15);
+        btnDasboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDasboardActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDasboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 170, -1));
+
+        btnTenants.setBackground(new java.awt.Color(255, 204, 255));
+        btnTenants.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnTenants.setForeground(new java.awt.Color(102, 0, 102));
+        btnTenants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/person.png"))); // NOI18N
+        btnTenants.setText("Tenants");
+        btnTenants.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnTenants.setIconTextGap(15);
+        btnTenants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTenantsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnTenants, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 170, -1));
+
+        btnRooms.setBackground(new java.awt.Color(255, 204, 255));
+        btnRooms.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRooms.setForeground(new java.awt.Color(102, 0, 102));
+        btnRooms.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/door (2).png"))); // NOI18N
+        btnRooms.setText("Rooms");
+        btnRooms.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRooms.setIconTextGap(15);
+        btnRooms.setInheritsPopupMenu(true);
+        btnRooms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRoomsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 170, -1));
+
+        btnPayments.setBackground(new java.awt.Color(255, 204, 255));
+        btnPayments.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnPayments.setForeground(new java.awt.Color(102, 0, 102));
+        btnPayments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/online-payment.png"))); // NOI18N
+        btnPayments.setText("Payments");
+        btnPayments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPayments.setIconTextGap(15);
+        btnPayments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaymentsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnPayments, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 170, -1));
+
+        btnlogout.setBackground(new java.awt.Color(255, 204, 255));
+        btnlogout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnlogout.setForeground(new java.awt.Color(102, 0, 102));
+        btnlogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow.png"))); // NOI18N
+        btnlogout.setText("Logout");
+        btnlogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnlogout.setIconTextGap(15);
+        btnlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlogoutActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnlogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 170, -1));
+
+        btnHistory1.setBackground(new java.awt.Color(255, 204, 255));
+        btnHistory1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnHistory1.setForeground(new java.awt.Color(102, 0, 102));
+        btnHistory1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/history.png"))); // NOI18N
+        btnHistory1.setText("History");
+        btnHistory1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnHistory1.setIconTextGap(15);
+        btnHistory1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistory1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnHistory1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 170, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 520));
+
+        jPanel2.setBackground(new java.awt.Color(255, 153, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 910, 10));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel4.setText("Payments");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Payment ID", "Tenant ID", "Tenant Name", "Room No", "Amount", "Payment For", "Mode", "Date", "PEriod", "Status", "Remarks"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 880, 180));
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton1.setText("Clear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 280, 120, -1));
+
+        jButton2.setBackground(new java.awt.Color(0, 153, 0));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setText("ADD");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 280, 300, -1));
+
+        jButton3.setBackground(new java.awt.Color(0, 102, 102));
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton3.setText("UPDATE");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 210, -1));
+
+        jButton4.setBackground(new java.awt.Color(102, 0, 0));
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton4.setText("Delete Payment");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 280, -1, -1));
+
+        jLabel6.setText("Tenant Name:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
+
+        jLabel7.setText("Room No:");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, -1, -1));
+
+        jLabel8.setText("Amount");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, -1, -1));
+
+        jLabel9.setText("Payment For:");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 70, -1, -1));
+
+        jLabel10.setText("Mode of Payment:");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 124, -1, 20));
+
+        jLabel11.setText("Payment Date:");
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
+
+        jLabel12.setText("Period Covered:");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, -1, -1));
+
+        jLabel13.setText("Status:");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 120, -1, -1));
+
+        jLabel14.setText("Remarks:");
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 160, -1));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 90, -1));
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 130, -1));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Monthly Rent", "Advance Payment", "Deposit" }));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 70, 170, -1));
+        jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 160, -1));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Cash", "Gcash", "Maya", "Bank Transfer", "Others" }));
+        jPanel2.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 140, -1));
+        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, 120, -1));
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Paid", "Unpaid" }));
+        jPanel2.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 120, 110, -1));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, 330, 80));
+
+        jButton5.setText("jButton5");
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 20, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDasboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDasboardActionPerformed
+        this.setVisible(false);
+        Home object = new Home();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnDasboardActionPerformed
+
+    private void btnTenantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTenantsActionPerformed
+        this.setVisible(false);
+        Tenants object = new Tenants();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnTenantsActionPerformed
+
+    private void btnRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomsActionPerformed
+        this.setVisible(false);
+        Rooms object = new Rooms();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnRoomsActionPerformed
+
+    private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
+        this.setVisible(false);
+        Payment object = new Payment();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnPaymentsActionPerformed
+
+    private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Boarding House", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION){
+            this.setVisible(false);
+            Login object = new Login();
+            object.setVisible(true);
+
+        }
+    }//GEN-LAST:event_btnlogoutActionPerformed
+
+    private void btnHistory1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistory1ActionPerformed
+        this.setVisible(false);
+        History object = new History();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnHistory1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       addPayment();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+                                       
+    int row = jTable1.getSelectedRow();
+
+    if (row < 0) {
+        return;
+    }
+
+    try {
+        int tenantId = Integer.parseInt(jTable1.getValueAt(row, 1).toString());
+        String tenantName = jTable1.getValueAt(row, 2).toString();
+        String roomNo = jTable1.getValueAt(row, 3).toString();
+        String amount = jTable1.getValueAt(row, 4).toString();
+        String paymentFor = jTable1.getValueAt(row, 5).toString();
+        String paymentMode = jTable1.getValueAt(row, 6).toString();
+
+        java.util.Date paymentDate =
+                java.sql.Date.valueOf(jTable1.getValueAt(row, 7).toString());
+
+        String period = jTable1.getValueAt(row, 8).toString();
+        String status = jTable1.getValueAt(row, 9).toString();
+
+        String remarks = "";
+        if (jTable1.getValueAt(row, 10) != null) {
+            remarks = jTable1.getValueAt(row, 10).toString();
+        }
+
+        jComboBox1.setSelectedItem(tenantId + " - " + tenantName);
+        jTextField1.setText(roomNo);
+        jTextField2.setText(amount);
+
+        jComboBox2.setSelectedItem(paymentFor);
+        jComboBox3.setSelectedItem(paymentMode);
+
+        jDateChooser1.setDate(paymentDate);
+        jTextField3.setText(period);
+
+        jComboBox4.setSelectedItem(
+                status.substring(0, 1).toUpperCase() + status.substring(1)
+        );
+
+        jTextArea1.setText(remarks);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error selecting payment: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_jTable1MouseClicked
+    private void updatePayment() {
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a payment to update.");
+        return;
+    }
+
+    try {
+        int paymentId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+
+        if (jComboBox1.getSelectedItem() == null ||
+                jComboBox1.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select tenant.");
+            return;
+        }
+
+        int tenantId = Integer.parseInt(jComboBox1.getSelectedItem().toString().split(" - ")[0]);
+        String tenantName = jComboBox1.getSelectedItem().toString().split(" - ")[1];
+
+        double amount = Double.parseDouble(jTextField2.getText().trim());
+        String paymentFor = jComboBox2.getSelectedItem().toString();
+        String paymentMode = jComboBox3.getSelectedItem().toString();
+        String periodCovered = jTextField3.getText().trim();
+        String status = jComboBox4.getSelectedItem().toString().toLowerCase();
+        String remarks = jTextArea1.getText().trim();
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "UPDATE payments SET tenant_id=?, amount=?, payment_for=?, payment_mode=?, "
+                + "payment_date=?, period_covered=?, status=?, remarks=? WHERE id=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, tenantId);
+        pst.setDouble(2, amount);
+        pst.setString(3, paymentFor);
+        pst.setString(4, paymentMode);
+        pst.setDate(5, new java.sql.Date(jDateChooser1.getDate().getTime()));
+        pst.setString(6, periodCovered);
+        pst.setString(7, status);
+        pst.setString(8, remarks);
+        pst.setInt(9, paymentId);
+
+        pst.executeUpdate();
+
+        logHistory(tenantId, "UPDATE PAYMENT",
+                "Updated payment for " + tenantName + ", amount: " + amount);
+
+        JOptionPane.showMessageDialog(this, "Payment updated successfully.");
+
+        loadPaymentsTable();
+        clearPaymentFields();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Amount must be a valid number.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error updating payment: " + e.getMessage());
+    }
+}
+    
+    private void deletePayment() {
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a payment to delete.");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this payment?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    try {
+        int paymentId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+        int tenantId = Integer.parseInt(jTable1.getValueAt(selectedRow, 1).toString());
+        String tenantName = jTable1.getValueAt(selectedRow, 2).toString();
+        String amount = jTable1.getValueAt(selectedRow, 4).toString();
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "DELETE FROM payments WHERE id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, paymentId);
+
+        pst.executeUpdate();
+
+        logHistory(tenantId, "DELETE PAYMENT",
+                "Deleted payment for " + tenantName + ", amount: " + amount);
+
+        JOptionPane.showMessageDialog(this, "Payment deleted successfully.");
+
+        loadPaymentsTable();
+        clearPaymentFields();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error deleting payment: " + e.getMessage());
+    }
+}
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        loadTenantRoom();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       updatePayment();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        deletePayment();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        clearPaymentFields();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void loadTenantRoom() {
+    try {
+        if (jComboBox1.getSelectedItem() == null) {
+            return;
+        }
+
+        String selectedTenant = jComboBox1.getSelectedItem().toString();
+
+        if (selectedTenant.equals("Select")) {
+            jTextField1.setText("");
+            return;
+        }
+
+        int tenantId = Integer.parseInt(selectedTenant.split(" - ")[0]);
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT r.room_number "
+                + "FROM tenants t "
+                + "LEFT JOIN rooms r ON t.room_id = r.id "
+                + "WHERE t.id=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, tenantId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            jTextField1.setText(rs.getString("room_number"));
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading room: " + e.getMessage());
+    }
+}
+    private void loadTenantsToComboBox() {
+    try {
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Select");
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT id, name FROM tenants ORDER BY name ASC";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            jComboBox1.addItem(rs.getInt("id") + " - " + rs.getString("name"));
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading tenants: " + e.getMessage());
+    }
+}
+    
+               private void loadPaymentsTable() {
+    try {
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT p.id, p.tenant_id, t.name, r.room_number, p.amount, "
+                + "p.payment_for, p.payment_mode, p.payment_date, "
+                + "p.period_covered, p.status, p.remarks "
+                + "FROM payments p "
+                + "LEFT JOIN tenants t ON p.tenant_id = t.id "
+                + "LEFT JOIN rooms r ON t.room_id = r.id "
+                + "ORDER BY p.id DESC";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getInt("tenant_id"),
+                rs.getString("name"),
+                rs.getString("room_number"),
+                rs.getBigDecimal("amount"),
+                rs.getString("payment_for"),
+                rs.getString("payment_mode"),
+                rs.getDate("payment_date"),
+                rs.getString("period_covered"),
+                rs.getString("status"),
+                rs.getString("remarks")
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading payments: " + e.getMessage());
+    }
+}
+    
+    
+    
+   private void logHistory(int tenantId, String action, String details) {
+    try {
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "INSERT INTO history (tenant_id, action_type, details) VALUES (?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, tenantId);
+        pst.setString(2, action);
+        pst.setString(3, details);
+
+        pst.executeUpdate();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "History Log Error: " + e.getMessage());
+    }
+}
+    
+   
+   private void addPayment() {
+    try {
+        if (jComboBox1.getSelectedItem() == null ||
+                jComboBox1.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select tenant.");
+            return;
+        }
+
+        if (jTextField2.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter amount.");
+            return;
+        }
+
+        if (jDateChooser1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select payment date.");
+            return;
+        }
+
+        if (jComboBox2.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select mode of payment.");
+            return;
+        }
+
+        if (jComboBox3.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select payment type.");
+            return;
+        }
+
+        if (jComboBox4.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select payment status.");
+            return;
+        }
+
+        int tenantId = Integer.parseInt(jComboBox1.getSelectedItem().toString().split(" - ")[0]);
+        String tenantName = jComboBox1.getSelectedItem().toString().split(" - ")[1];
+
+        double amount = Double.parseDouble(jTextField2.getText().trim());
+        String paymentFor = jComboBox2.getSelectedItem().toString();
+        String paymentMode = jComboBox3.getSelectedItem().toString();
+        String periodCovered = jTextField3.getText().trim();
+        String status = jComboBox4.getSelectedItem().toString().toLowerCase();
+        String remarks = jTextArea1.getText().trim();
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "INSERT INTO payments "
+                + "(tenant_id, amount, payment_for, payment_mode, payment_date, period_covered, status, remarks) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, tenantId);
+        pst.setDouble(2, amount);
+        pst.setString(3, paymentFor);
+        pst.setString(4, paymentMode);
+        pst.setDate(5, new java.sql.Date(jDateChooser1.getDate().getTime()));
+        pst.setString(6, periodCovered);
+        pst.setString(7, status);
+        pst.setString(8, remarks);
+
+        pst.executeUpdate();
+
+        logHistory(tenantId, "ADD PAYMENT",
+                "Added payment for " + tenantName + ", amount: " + amount);
+
+        JOptionPane.showMessageDialog(this, "Payment added successfully.");
+
+        loadPaymentsTable();
+        clearPaymentFields();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Amount must be a valid number.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error adding payment: " + e.getMessage());
+    }
+}
+    
+    
+    private void clearPaymentFields() {
+    jComboBox1.setSelectedIndex(0);
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jDateChooser1.setDate(null);
+    jComboBox2.setSelectedIndex(0);
+    jComboBox3.setSelectedIndex(0);
+    jTextField3.setText("");
+    jComboBox4.setSelectedIndex(0);
+    jTextArea1.setText("");
+    jTable1.clearSelection();
+}
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -79,5 +799,45 @@ public class Payment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDasboard;
+    private javax.swing.JButton btnHistory1;
+    private javax.swing.JButton btnPayments;
+    private javax.swing.JButton btnRooms;
+    private javax.swing.JButton btnTenants;
+    private javax.swing.JButton btnlogout;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
