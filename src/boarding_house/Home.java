@@ -15,12 +15,16 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class Home extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Home
      */
     public Home() {
         initComponents();
+        loadTotalTenants();
+        loadTotalRooms();
+        loadTotalAvailableRooms();
+        loadTotalPayment();
     }
 
     /**
@@ -59,6 +63,7 @@ public class Home extends javax.swing.JFrame {
         payments = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -240,7 +245,12 @@ public class Home extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 860, 190));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 860, 190));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel8.setText("Recent Payments");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 520));
 
@@ -290,10 +300,133 @@ public class Home extends javax.swing.JFrame {
         object.setVisible(true);
     }//GEN-LAST:event_btnHistory1ActionPerformed
 
-    
-    
+    public void loadTotalTenants() {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
 
-            
+    try {
+        conn = DBConnection.getConnection();
+
+        String sql = "SELECT COUNT(*) AS total_tenants FROM tenants";
+
+        pstmt = conn.prepareStatement(sql);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            int totalTenants = rs.getInt("total_tenants");
+            System.out.println("Total tenants: " + totalTenants);
+            tenant.setText(String.valueOf(totalTenants));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+       
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+    
+     public void loadTotalRooms() {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DBConnection.getConnection();
+
+        String sql = "SELECT COUNT(*) AS total_rooms FROM rooms";
+
+        pstmt = conn.prepareStatement(sql);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            int totalRooms = rs.getInt("total_rooms");
+            System.out.println("Total Rooms: " + totalRooms);
+            rooms.setText(String.valueOf(totalRooms));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+       
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+    public void loadTotalAvailableRooms() {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DBConnection.getConnection();
+
+        String sql = "SELECT COUNT(*) AS total_available_rooms FROM rooms WHERE status='Available'";
+
+        pstmt = conn.prepareStatement(sql);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            int totalAvailableRooms = rs.getInt("total_available_rooms");
+            System.out.println("Total Available Rooms: " + totalAvailableRooms);
+            available_room.setText(String.valueOf(totalAvailableRooms));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+       
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+    
+    public void loadTotalPayment() {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DBConnection.getConnection();
+
+        String sql = "SELECT COUNT(*) AS total_payments FROM payments";
+
+        pstmt = conn.prepareStatement(sql);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            int totalPayments = rs.getInt("total_payments");
+            System.out.println("Total Payments: " + totalPayments);
+            payments.setText(String.valueOf(totalPayments));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+       
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -344,6 +477,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
