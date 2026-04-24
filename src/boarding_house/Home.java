@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package boarding_house;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,22 +32,268 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnDasboard = new javax.swing.JButton();
+        btnTenants = new javax.swing.JButton();
+        btnRooms = new javax.swing.JButton();
+        btnPayments = new javax.swing.JButton();
+        btnlogout = new javax.swing.JButton();
+        btnHistory1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        tenant = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        rooms = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        available_room = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        payments = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pack();
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ben.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 102, 255));
+        jLabel2.setText("BOARDING HOUSE");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Management System");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 230, 20));
+
+        btnDasboard.setBackground(new java.awt.Color(255, 204, 255));
+        btnDasboard.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDasboard.setForeground(new java.awt.Color(102, 0, 102));
+        btnDasboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home (2).png"))); // NOI18N
+        btnDasboard.setText("Dashboard");
+        btnDasboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnDasboard.setIconTextGap(15);
+        btnDasboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDasboardActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDasboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 170, -1));
+
+        btnTenants.setBackground(new java.awt.Color(255, 204, 255));
+        btnTenants.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnTenants.setForeground(new java.awt.Color(102, 0, 102));
+        btnTenants.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/person.png"))); // NOI18N
+        btnTenants.setText("Tenants");
+        btnTenants.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnTenants.setIconTextGap(15);
+        btnTenants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTenantsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnTenants, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 170, -1));
+
+        btnRooms.setBackground(new java.awt.Color(255, 204, 255));
+        btnRooms.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRooms.setForeground(new java.awt.Color(102, 0, 102));
+        btnRooms.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/door (2).png"))); // NOI18N
+        btnRooms.setText("Rooms");
+        btnRooms.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRooms.setIconTextGap(15);
+        btnRooms.setInheritsPopupMenu(true);
+        btnRooms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRoomsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 170, -1));
+
+        btnPayments.setBackground(new java.awt.Color(255, 204, 255));
+        btnPayments.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnPayments.setForeground(new java.awt.Color(102, 0, 102));
+        btnPayments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/online-payment.png"))); // NOI18N
+        btnPayments.setText("Payments");
+        btnPayments.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPayments.setIconTextGap(15);
+        btnPayments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaymentsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnPayments, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 170, -1));
+
+        btnlogout.setBackground(new java.awt.Color(255, 204, 255));
+        btnlogout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnlogout.setForeground(new java.awt.Color(102, 0, 102));
+        btnlogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arrow.png"))); // NOI18N
+        btnlogout.setText("Logout");
+        btnlogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnlogout.setIconTextGap(15);
+        btnlogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlogoutActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnlogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 170, -1));
+
+        btnHistory1.setBackground(new java.awt.Color(255, 204, 255));
+        btnHistory1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnHistory1.setForeground(new java.awt.Color(102, 0, 102));
+        btnHistory1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/history.png"))); // NOI18N
+        btnHistory1.setText("History");
+        btnHistory1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnHistory1.setIconTextGap(15);
+        btnHistory1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistory1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnHistory1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 170, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 520));
+
+        jPanel2.setBackground(new java.awt.Color(255, 153, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel4.setText("Admin Dashboard");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel5.setText("Total Tenants");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        tenant.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        tenant.setForeground(new java.awt.Color(153, 0, 153));
+        tenant.setText("0");
+        jPanel3.add(tenant, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 30));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 190, 130));
+
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel6.setText("Total Rooms");
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        rooms.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        rooms.setForeground(new java.awt.Color(153, 0, 153));
+        rooms.setText("0");
+        jPanel4.add(rooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 40, 30));
+
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 190, 130));
+
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel7.setText("Available Rooms");
+        jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        available_room.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        available_room.setForeground(new java.awt.Color(153, 0, 153));
+        available_room.setText("0");
+        jPanel5.add(available_room, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 40, 30));
+
+        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 190, 130));
+
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel9.setText("Payments");
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        payments.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        payments.setForeground(new java.awt.Color(153, 0, 153));
+        payments.setText("0");
+        jPanel6.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 60, 40));
+
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 80, 190, 130));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Tenants Name", "Room", "Amount Paid"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 860, 190));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 520));
+
+        setSize(new java.awt.Dimension(1145, 558));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDasboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDasboardActionPerformed
+        this.setVisible(false);
+        Home object = new Home();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnDasboardActionPerformed
+
+    private void btnTenantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTenantsActionPerformed
+        this.setVisible(false);
+        Tenants object = new Tenants();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnTenantsActionPerformed
+
+    private void btnRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomsActionPerformed
+        this.setVisible(false);
+        Rooms object = new Rooms();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnRoomsActionPerformed
+
+    private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
+        this.setVisible(false);
+        Payment object = new Payment();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnPaymentsActionPerformed
+
+    private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout Boarding House", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION){
+            this.setVisible(false);
+            Login object = new Login();
+            object.setVisible(true);
+            
+        }
+        
+    }//GEN-LAST:event_btnlogoutActionPerformed
+
+    private void btnHistory1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistory1ActionPerformed
+        this.setVisible(false);
+        History object = new History();
+        object.setVisible(true);
+    }//GEN-LAST:event_btnHistory1ActionPerformed
+
+    
+    
+
+            
     /**
      * @param args the command line arguments
      */
@@ -79,5 +330,32 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel available_room;
+    private javax.swing.JButton btnDasboard;
+    private javax.swing.JButton btnHistory1;
+    private javax.swing.JButton btnPayments;
+    private javax.swing.JButton btnRooms;
+    private javax.swing.JButton btnTenants;
+    private javax.swing.JButton btnlogout;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel payments;
+    private javax.swing.JLabel rooms;
+    private javax.swing.JLabel tenant;
     // End of variables declaration//GEN-END:variables
 }
