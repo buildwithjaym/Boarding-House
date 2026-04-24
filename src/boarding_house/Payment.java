@@ -6,6 +6,17 @@
 package boarding_house;
 import java.sql.*;
 import javax.swing.*;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -77,11 +88,13 @@ public class Payment extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jComboBox3 = new javax.swing.JComboBox<>();
-        jTextField3 = new javax.swing.JTextField();
         jComboBox4 = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jButton5 = new javax.swing.JButton();
+        downloadPaymentReceipt = new javax.swing.JButton();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -191,7 +204,7 @@ public class Payment extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 910, 10));
+        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 950, 10));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 0, 102));
@@ -203,7 +216,7 @@ public class Payment extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Payment ID", "Tenant ID", "Tenant Name", "Room No", "Amount", "Payment For", "Mode", "Date", "PEriod", "Status", "Remarks"
+                "Payment ID", "Tenant ID", "Tenant Name", "Room No", "Amount", "Payment For", "Mode", "Date", "Period From", "Period To", "Period Covered", "Status", "Remarks"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -213,7 +226,7 @@ public class Payment extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 880, 180));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 920, 180));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setText("Clear");
@@ -261,10 +274,10 @@ public class Payment extends javax.swing.JFrame {
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, -1, -1));
 
         jLabel8.setText("Amount");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, -1, -1));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, -1, -1));
 
         jLabel9.setText("Payment For:");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 70, -1, -1));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, -1, -1));
 
         jLabel10.setText("Mode of Payment:");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 124, -1, 20));
@@ -273,10 +286,10 @@ public class Payment extends javax.swing.JFrame {
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         jLabel12.setText("Period Covered:");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, -1, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 120, -1, -1));
 
         jLabel13.setText("Status:");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 120, -1, -1));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 70, -1, -1));
 
         jLabel14.setText("Remarks:");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, -1, -1));
@@ -294,25 +307,24 @@ public class Payment extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 90, -1));
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 90, -1));
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 130, -1));
+        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, 130, -1));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Monthly Rent", "Advance Payment", "Deposit" }));
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 70, 170, -1));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 110, -1));
         jPanel2.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 160, -1));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Cash", "Gcash", "Maya", "Bank Transfer", "Others" }));
         jPanel2.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 140, -1));
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, 120, -1));
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Paid", "Unpaid" }));
-        jPanel2.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 120, 110, -1));
+        jPanel2.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 70, 110, -1));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -320,12 +332,25 @@ public class Payment extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, 330, 80));
 
-        jButton5.setText("jButton5");
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 20, -1, -1));
+        downloadPaymentReceipt.setBackground(new java.awt.Color(0, 204, 0));
+        downloadPaymentReceipt.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        downloadPaymentReceipt.setText("Download Receipt");
+        downloadPaymentReceipt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadPaymentReceiptActionPerformed(evt);
+            }
+        });
+        jPanel2.add(downloadPaymentReceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 10, -1, 30));
+        jPanel2.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 120, 120, -1));
+        jPanel2.add(jDateChooser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 120, 120, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 520));
+        jLabel15.setText("Period to:");
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 120, -1, -1));
 
-        pack();
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 950, 520));
+
+        setSize(new java.awt.Dimension(1193, 557));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDasboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDasboardActionPerformed
@@ -374,7 +399,8 @@ public class Payment extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-                                       
+      
+  
     int row = jTable1.getSelectedRow();
 
     if (row < 0) {
@@ -384,37 +410,26 @@ public class Payment extends javax.swing.JFrame {
     try {
         int tenantId = Integer.parseInt(jTable1.getValueAt(row, 1).toString());
         String tenantName = jTable1.getValueAt(row, 2).toString();
-        String roomNo = jTable1.getValueAt(row, 3).toString();
-        String amount = jTable1.getValueAt(row, 4).toString();
-        String paymentFor = jTable1.getValueAt(row, 5).toString();
-        String paymentMode = jTable1.getValueAt(row, 6).toString();
-
-        java.util.Date paymentDate =
-                java.sql.Date.valueOf(jTable1.getValueAt(row, 7).toString());
-
-        String period = jTable1.getValueAt(row, 8).toString();
-        String status = jTable1.getValueAt(row, 9).toString();
-
-        String remarks = "";
-        if (jTable1.getValueAt(row, 10) != null) {
-            remarks = jTable1.getValueAt(row, 10).toString();
-        }
 
         jComboBox1.setSelectedItem(tenantId + " - " + tenantName);
-        jTextField1.setText(roomNo);
-        jTextField2.setText(amount);
+        jTextField1.setText(jTable1.getValueAt(row, 3).toString());
+        jTextField2.setText(jTable1.getValueAt(row, 4).toString());
+        jComboBox2.setSelectedItem(jTable1.getValueAt(row, 5).toString());
+        jComboBox3.setSelectedItem(jTable1.getValueAt(row, 6).toString());
 
-        jComboBox2.setSelectedItem(paymentFor);
-        jComboBox3.setSelectedItem(paymentMode);
+        jDateChooser1.setDate(java.sql.Date.valueOf(jTable1.getValueAt(row, 7).toString()));
+        jDateChooser2.setDate(java.sql.Date.valueOf(jTable1.getValueAt(row, 8).toString()));
+        jDateChooser3.setDate(java.sql.Date.valueOf(jTable1.getValueAt(row, 9).toString()));
 
-        jDateChooser1.setDate(paymentDate);
-        jTextField3.setText(period);
+        String status = jTable1.getValueAt(row, 11).toString();
 
         jComboBox4.setSelectedItem(
                 status.substring(0, 1).toUpperCase() + status.substring(1)
         );
 
-        jTextArea1.setText(remarks);
+        jTextArea1.setText(
+                jTable1.getValueAt(row, 12) == null ? "" : jTable1.getValueAt(row, 12).toString()
+        );
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error selecting payment: " + e.getMessage());
@@ -438,20 +453,42 @@ public class Payment extends javax.swing.JFrame {
             return;
         }
 
+        if (jTextField2.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter amount.");
+            return;
+        }
+
+        if (jDateChooser1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select payment date.");
+            return;
+        }
+
+        if (jDateChooser2.getDate() == null || jDateChooser3.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select period covered and period to.");
+            return;
+        }
+
+        if (!jDateChooser3.getDate().after(jDateChooser2.getDate())) {
+            JOptionPane.showMessageDialog(this, "Period to must be after period covered.");
+            return;
+        }
+
         int tenantId = Integer.parseInt(jComboBox1.getSelectedItem().toString().split(" - ")[0]);
         String tenantName = jComboBox1.getSelectedItem().toString().split(" - ")[1];
 
         double amount = Double.parseDouble(jTextField2.getText().trim());
         String paymentFor = jComboBox2.getSelectedItem().toString();
         String paymentMode = jComboBox3.getSelectedItem().toString();
-        String periodCovered = jTextField3.getText().trim();
+        java.util.Date paymentDate = jDateChooser1.getDate();
+        String periodCovered = getPeriodCovered();
         String status = jComboBox4.getSelectedItem().toString().toLowerCase();
         String remarks = jTextArea1.getText().trim();
 
         java.sql.Connection conn = DBConnection.getConnection();
 
         String sql = "UPDATE payments SET tenant_id=?, amount=?, payment_for=?, payment_mode=?, "
-                + "payment_date=?, period_covered=?, status=?, remarks=? WHERE id=?";
+                + "payment_date=?, period_from=?, period_to=?, period_covered=?, "
+                + "status=?, remarks=? WHERE id=?";
 
         PreparedStatement pst = conn.prepareStatement(sql);
 
@@ -459,16 +496,19 @@ public class Payment extends javax.swing.JFrame {
         pst.setDouble(2, amount);
         pst.setString(3, paymentFor);
         pst.setString(4, paymentMode);
-        pst.setDate(5, new java.sql.Date(jDateChooser1.getDate().getTime()));
-        pst.setString(6, periodCovered);
-        pst.setString(7, status);
-        pst.setString(8, remarks);
-        pst.setInt(9, paymentId);
+        pst.setDate(5, new java.sql.Date(paymentDate.getTime()));
+        pst.setDate(6, new java.sql.Date(jDateChooser2.getDate().getTime()));
+        pst.setDate(7, new java.sql.Date(jDateChooser3.getDate().getTime()));
+        pst.setString(8, periodCovered);
+        pst.setString(9, status);
+        pst.setString(10, remarks);
+        pst.setInt(11, paymentId);
 
         pst.executeUpdate();
 
         logHistory(tenantId, "UPDATE PAYMENT",
-                "Updated payment for " + tenantName + ", amount: " + amount);
+                "Updated payment for " + tenantName + ", amount: " + amount
+                + ", period covered: " + periodCovered);
 
         JOptionPane.showMessageDialog(this, "Payment updated successfully.");
 
@@ -482,7 +522,9 @@ public class Payment extends javax.swing.JFrame {
     }
 }
     
-    private void deletePayment() {
+    
+
+       private void deletePayment() {
     int selectedRow = jTable1.getSelectedRow();
 
     if (selectedRow == -1) {
@@ -506,6 +548,7 @@ public class Payment extends javax.swing.JFrame {
         int tenantId = Integer.parseInt(jTable1.getValueAt(selectedRow, 1).toString());
         String tenantName = jTable1.getValueAt(selectedRow, 2).toString();
         String amount = jTable1.getValueAt(selectedRow, 4).toString();
+        String period = jTable1.getValueAt(selectedRow, 10).toString();
 
         java.sql.Connection conn = DBConnection.getConnection();
 
@@ -516,7 +559,8 @@ public class Payment extends javax.swing.JFrame {
         pst.executeUpdate();
 
         logHistory(tenantId, "DELETE PAYMENT",
-                "Deleted payment for " + tenantName + ", amount: " + amount);
+                "Deleted payment for " + tenantName + ", amount: " + amount
+                + ", period covered: " + period);
 
         JOptionPane.showMessageDialog(this, "Payment deleted successfully.");
 
@@ -527,6 +571,8 @@ public class Payment extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error deleting payment: " + e.getMessage());
     }
 }
+    
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         loadTenantRoom();
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -550,7 +596,121 @@ public class Payment extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         clearPaymentFields();
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
+    private void downloadPaymentReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadPaymentReceiptActionPerformed
+     
+    //String tenantName = JOptionPane.showInputDialog(this, "Enter tenant name:");
+
+    //if (tenantName == null || tenantName.trim().isEmpty()) {
+    //    return;
+    //}
+    downloadPaymentReceipt();
+
+    }//GEN-LAST:event_downloadPaymentReceiptActionPerformed
+    private void downloadPaymentReceipt() {
+    try {
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        JComboBox<String> tenantBox = new JComboBox<>();
+        tenantBox.addItem("Select Tenant");
+
+        String tenantSql = "SELECT id, name FROM tenants ORDER BY name ASC";
+        PreparedStatement tenantPst = conn.prepareStatement(tenantSql);
+        ResultSet tenantRs = tenantPst.executeQuery();
+
+        while (tenantRs.next()) {
+            tenantBox.addItem(tenantRs.getInt("id") + " - " + tenantRs.getString("name"));
+        }
+
+        int tenantChoice = JOptionPane.showConfirmDialog(
+                this,
+                tenantBox,
+                "Choose Tenant",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (tenantChoice != JOptionPane.OK_OPTION ||
+                tenantBox.getSelectedItem() == null ||
+                tenantBox.getSelectedItem().toString().equals("Select Tenant")) {
+            return;
+        }
+
+        int tenantId = Integer.parseInt(tenantBox.getSelectedItem().toString().split(" - ")[0]);
+
+        JComboBox<String> periodBox = new JComboBox<>();
+        periodBox.addItem("Select Payment Period");
+
+        String periodSql = "SELECT id, period_covered, amount, payment_date "
+                + "FROM payments "
+                + "WHERE tenant_id=? "
+                + "ORDER BY payment_date DESC";
+
+        PreparedStatement periodPst = conn.prepareStatement(periodSql);
+        periodPst.setInt(1, tenantId);
+        ResultSet periodRs = periodPst.executeQuery();
+
+        while (periodRs.next()) {
+            periodBox.addItem(
+                    periodRs.getInt("id") + " - "
+                    + periodRs.getString("period_covered") + " | PHP "
+                    + periodRs.getBigDecimal("amount")
+            );
+        }
+
+        if (periodBox.getItemCount() == 1) {
+            JOptionPane.showMessageDialog(this, "No payment records found for this tenant.");
+            return;
+        }
+
+        int periodChoice = JOptionPane.showConfirmDialog(
+                this,
+                periodBox,
+                "Choose Payment Period",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (periodChoice != JOptionPane.OK_OPTION ||
+                periodBox.getSelectedItem() == null ||
+                periodBox.getSelectedItem().toString().equals("Select Payment Period")) {
+            return;
+        }
+
+        int paymentId = Integer.parseInt(periodBox.getSelectedItem().toString().split(" - ")[0]);
+
+       String sql = "SELECT t.name, r.room_number, p.amount, p.payment_for, "
+        + "p.payment_mode, p.payment_date, p.period_from, p.period_to, "
+        + "p.remarks "
+        + "FROM payments p "
+        + "JOIN tenants t ON p.tenant_id = t.id "
+        + "LEFT JOIN rooms r ON t.room_id = r.id "
+        + "WHERE p.id=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, paymentId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            showReceiptPreview(
+                    rs.getString("name"),
+                    rs.getString("room_number"),
+                    rs.getDouble("amount"),
+                    rs.getString("payment_for"),
+                    rs.getString("payment_mode"),
+                    rs.getDate("payment_date"),
+                    formatPeriodCovered(rs.getDate("period_from"), rs.getDate("period_to")),
+                    rs.getString("remarks") == null ? "" : rs.getString("remarks")
+            );
+        } else {
+            JOptionPane.showMessageDialog(this, "Payment record not found.");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error downloading receipt: " + e.getMessage());
+    }
+}
     private void loadTenantRoom() {
     try {
         if (jComboBox1.getSelectedItem() == null) {
@@ -605,8 +765,7 @@ public class Payment extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error loading tenants: " + e.getMessage());
     }
 }
-    
-               private void loadPaymentsTable() {
+    private void loadPaymentsTable() {
     try {
         javax.swing.table.DefaultTableModel model =
                 (javax.swing.table.DefaultTableModel) jTable1.getModel();
@@ -617,7 +776,8 @@ public class Payment extends javax.swing.JFrame {
 
         String sql = "SELECT p.id, p.tenant_id, t.name, r.room_number, p.amount, "
                 + "p.payment_for, p.payment_mode, p.payment_date, "
-                + "p.period_covered, p.status, p.remarks "
+                + "p.period_from, p.period_to, p.period_covered, "
+                + "p.status, p.remarks "
                 + "FROM payments p "
                 + "LEFT JOIN tenants t ON p.tenant_id = t.id "
                 + "LEFT JOIN rooms r ON t.room_id = r.id "
@@ -636,6 +796,8 @@ public class Payment extends javax.swing.JFrame {
                 rs.getString("payment_for"),
                 rs.getString("payment_mode"),
                 rs.getDate("payment_date"),
+                rs.getDate("period_from"),
+                rs.getDate("period_to"),
                 rs.getString("period_covered"),
                 rs.getString("status"),
                 rs.getString("remarks")
@@ -646,9 +808,6 @@ public class Payment extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error loading payments: " + e.getMessage());
     }
 }
-    
-    
-    
    private void logHistory(int tenantId, String action, String details) {
     try {
         java.sql.Connection conn = DBConnection.getConnection();
@@ -666,9 +825,7 @@ public class Payment extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "History Log Error: " + e.getMessage());
     }
 }
-    
-   
-   private void addPayment() {
+    private void addPayment() {
     try {
         if (jComboBox1.getSelectedItem() == null ||
                 jComboBox1.getSelectedItem().toString().equals("Select")) {
@@ -686,13 +843,23 @@ public class Payment extends javax.swing.JFrame {
             return;
         }
 
+        if (jDateChooser2.getDate() == null || jDateChooser3.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select period covered and period to.");
+            return;
+        }
+
+        if (!jDateChooser3.getDate().after(jDateChooser2.getDate())) {
+            JOptionPane.showMessageDialog(this, "Period to must be after period covered.");
+            return;
+        }
+
         if (jComboBox2.getSelectedItem().toString().equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please select mode of payment.");
+            JOptionPane.showMessageDialog(this, "Please select payment type.");
             return;
         }
 
         if (jComboBox3.getSelectedItem().toString().equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please select payment type.");
+            JOptionPane.showMessageDialog(this, "Please select mode of payment.");
             return;
         }
 
@@ -704,18 +871,21 @@ public class Payment extends javax.swing.JFrame {
         int tenantId = Integer.parseInt(jComboBox1.getSelectedItem().toString().split(" - ")[0]);
         String tenantName = jComboBox1.getSelectedItem().toString().split(" - ")[1];
 
+        String roomNo = jTextField1.getText().trim();
         double amount = Double.parseDouble(jTextField2.getText().trim());
         String paymentFor = jComboBox2.getSelectedItem().toString();
         String paymentMode = jComboBox3.getSelectedItem().toString();
-        String periodCovered = jTextField3.getText().trim();
+        java.util.Date paymentDate = jDateChooser1.getDate();
+        String periodCovered = getPeriodCovered();
         String status = jComboBox4.getSelectedItem().toString().toLowerCase();
         String remarks = jTextArea1.getText().trim();
 
         java.sql.Connection conn = DBConnection.getConnection();
 
         String sql = "INSERT INTO payments "
-                + "(tenant_id, amount, payment_for, payment_mode, payment_date, period_covered, status, remarks) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(tenant_id, amount, payment_for, payment_mode, payment_date, "
+                + "period_from, period_to, period_covered, status, remarks) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement pst = conn.prepareStatement(sql);
 
@@ -723,19 +893,34 @@ public class Payment extends javax.swing.JFrame {
         pst.setDouble(2, amount);
         pst.setString(3, paymentFor);
         pst.setString(4, paymentMode);
-        pst.setDate(5, new java.sql.Date(jDateChooser1.getDate().getTime()));
-        pst.setString(6, periodCovered);
-        pst.setString(7, status);
-        pst.setString(8, remarks);
+        pst.setDate(5, new java.sql.Date(paymentDate.getTime()));
+        pst.setDate(6, new java.sql.Date(jDateChooser2.getDate().getTime()));
+        pst.setDate(7, new java.sql.Date(jDateChooser3.getDate().getTime()));
+        pst.setString(8, periodCovered);
+        pst.setString(9, status);
+        pst.setString(10, remarks);
 
         pst.executeUpdate();
 
         logHistory(tenantId, "ADD PAYMENT",
-                "Added payment for " + tenantName + ", amount: " + amount);
+                "Added payment for " + tenantName + ", amount: " + amount
+                + ", period covered: " + periodCovered);
 
         JOptionPane.showMessageDialog(this, "Payment added successfully.");
 
         loadPaymentsTable();
+
+        showReceiptPreview(
+                tenantName,
+                roomNo,
+                amount,
+                paymentFor,
+                paymentMode,
+                paymentDate,
+                periodCovered,
+                remarks
+        );
+
         clearPaymentFields();
 
     } catch (NumberFormatException e) {
@@ -746,23 +931,279 @@ public class Payment extends javax.swing.JFrame {
 }
     
     
-    private void clearPaymentFields() {
+    private String getPeriodCovered() {
+    if (jDateChooser2.getDate() == null || jDateChooser3.getDate() == null) {
+        return "";
+    }
+
+    java.util.Date fromDate = jDateChooser2.getDate();
+    java.util.Date toDate = jDateChooser3.getDate();
+
+    java.text.SimpleDateFormat month = new java.text.SimpleDateFormat("MMMM");
+    java.text.SimpleDateFormat day = new java.text.SimpleDateFormat("dd");
+    java.text.SimpleDateFormat year = new java.text.SimpleDateFormat("yyyy");
+
+    String fromMonth = month.format(fromDate);
+    String toMonth = month.format(toDate);
+
+    if (fromMonth.equals(toMonth)) {
+        return fromMonth + " " + day.format(fromDate)
+                + " - " + day.format(toDate) + ", "
+                + year.format(toDate);
+    } else {
+        return fromMonth + " " + day.format(fromDate)
+                + " - " + toMonth + " " + day.format(toDate)
+                + ", " + year.format(toDate);
+    }
+}
+    
+    
+    
+   private void clearPaymentFields() {
     jComboBox1.setSelectedIndex(0);
     jTextField1.setText("");
     jTextField2.setText("");
     jDateChooser1.setDate(null);
+    jDateChooser2.setDate(null);
+    jDateChooser3.setDate(null);
     jComboBox2.setSelectedIndex(0);
     jComboBox3.setSelectedIndex(0);
-    jTextField3.setText("");
     jComboBox4.setSelectedIndex(0);
     jTextArea1.setText("");
     jTable1.clearSelection();
 }
     
-    
-    
-    
-    
+   private String formatPeriodCovered(java.util.Date fromDate, java.util.Date toDate) {
+    if (fromDate == null || toDate == null) {
+        return "No period selected";
+    }
+
+    java.text.SimpleDateFormat month = new java.text.SimpleDateFormat("MMMM");
+    java.text.SimpleDateFormat day = new java.text.SimpleDateFormat("dd");
+    java.text.SimpleDateFormat year = new java.text.SimpleDateFormat("yyyy");
+
+    String fromMonth = month.format(fromDate);
+    String toMonth = month.format(toDate);
+
+    if (fromMonth.equals(toMonth)) {
+        return fromMonth + " " + day.format(fromDate)
+                + " - " + day.format(toDate)
+                + ", " + year.format(toDate);
+    }
+
+    return fromMonth + " " + day.format(fromDate)
+            + " - " + toMonth + " " + day.format(toDate)
+            + ", " + year.format(toDate);
+}
+         private void showReceiptPreview(
+        String tenantName,
+        String roomNo,
+        double amount,
+        String paymentFor,
+        String paymentMode,
+        java.util.Date paymentDate,
+        String periodCovered,
+        String remarks
+) {
+    SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+
+    String receipt =
+            "BOARDING HOUSE RECEIPT\n\n"
+            + "Date: " + periodCovered + "\n"
+            + "Payment Date: " + sdf.format(paymentDate) + "\n\n"
+            + "Received From: " + tenantName + "\n"
+            + "Room No: " + roomNo + "\n"
+            + "Amount Paid: PHP " + String.format("%.2f", amount) + "\n\n"
+            + "Payment For:\n"
+            + checkbox(paymentFor, "Monthly Rent") + " Monthly Rent\n"
+            + checkbox(paymentFor, "Advance Payment") + " Advance Payment\n"
+            + checkbox(paymentFor, "Deposit") + " Deposit\n\n"
+            + "Mode of Payment:\n"
+            + checkbox(paymentMode, "GCash") + " GCash     "
+            + checkbox(paymentMode, "Cash") + " Cash\n"
+            + checkbox(paymentMode, "Bank Transfer") + " Bank Transfer     "
+            + checkbox(paymentMode, "Others") + " Others\n\n"
+            + "Remarks: " + (remarks == null || remarks.isEmpty() ? "None" : remarks) + "\n\n"
+            + "LANDLORD / OWNER\n"
+            + "Name: ______________________\n"
+            + "Signature: _________________\n\n"
+            + "TENANT\n"
+            + "Name: " + tenantName + "\n"
+            + "Signature: _________________\n\n"
+            + "THANK YOU";
+
+    int choice = JOptionPane.showConfirmDialog(
+            this,
+            receipt,
+            "Receipt Preview - Continue to PDF?",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE
+    );
+
+    if (choice == JOptionPane.YES_OPTION) {
+        generateReceiptPDF(
+                tenantName,
+                roomNo,
+                amount,
+                paymentFor,
+                paymentMode,
+                paymentDate,
+                periodCovered,
+                remarks
+        );
+    }
+}
+
+   
+   private String checkbox(String selected, String option) {
+    if (selected != null && selected.equalsIgnoreCase(option)) {
+        return "[X]";
+    }
+    return "[ ]";
+}
+   
+
+       private void generateReceiptPDF(
+        String tenantName,
+        String roomNo,
+        double amount,
+        String paymentFor,
+        String paymentMode,
+        java.util.Date paymentDate,
+        String periodCovered,
+        String remarks
+) {
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+
+        String safeTenant = tenantName.replaceAll("[^a-zA-Z0-9]", "_");
+        String safePeriod = periodCovered.replaceAll("[^a-zA-Z0-9]", "_");
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save Payment Receipt");
+        chooser.setSelectedFile(new java.io.File(
+                "BoardingHouse_Receipt_" + safeTenant + "_" + safePeriod + ".pdf"
+        ));
+
+        int userSelection = chooser.showSaveDialog(this);
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "Receipt PDF was not saved.");
+            return;
+        }
+
+        String filePath = chooser.getSelectedFile().getAbsolutePath();
+
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+        document.open();
+
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 11);
+
+        Paragraph title = new Paragraph("BOARDING HOUSE RECEIPT", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(20);
+        document.add(title);
+
+        PdfPTable infoTable = new PdfPTable(2);
+        infoTable.setWidthPercentage(100);
+        infoTable.setWidths(new float[]{35, 65});
+
+        addTableRow(infoTable, "Date:", periodCovered, headerFont, normalFont);
+        addTableRow(infoTable, "Payment Date:", sdf.format(paymentDate), headerFont, normalFont);
+        addTableRow(infoTable, "Received From:", tenantName, headerFont, normalFont);
+        addTableRow(infoTable, "Room No:", roomNo, headerFont, normalFont);
+        addTableRow(infoTable, "Amount Paid:", "PHP " + String.format("%.2f", amount), headerFont, normalFont);
+
+        document.add(infoTable);
+        document.add(space());
+
+        document.add(new Paragraph("Payment For:", headerFont));
+        document.add(new Paragraph(checkbox(paymentFor, "Monthly Rent") + " Monthly Rent", normalFont));
+        document.add(new Paragraph(checkbox(paymentFor, "Advance Payment") + " Advance Payment", normalFont));
+        document.add(new Paragraph(checkbox(paymentFor, "Deposit") + " Deposit", normalFont));
+
+        document.add(space());
+
+        document.add(new Paragraph("Mode of Payment:", headerFont));
+        document.add(new Paragraph(
+                checkbox(paymentMode, "GCash") + " GCash        "
+                + checkbox(paymentMode, "Cash") + " Cash",
+                normalFont
+        ));
+        document.add(new Paragraph(
+                checkbox(paymentMode, "Bank Transfer") + " Bank Transfer        "
+                + checkbox(paymentMode, "Others") + " Others",
+                normalFont
+        ));
+
+        document.add(space());
+
+        document.add(new Paragraph(
+                "Remarks: " + (remarks == null || remarks.isEmpty() ? "None" : remarks),
+                normalFont
+        ));
+
+        document.add(space());
+
+        Paragraph owner = new Paragraph("LANDLORD / OWNER", headerFont);
+        owner.setAlignment(Element.ALIGN_CENTER);
+        document.add(owner);
+
+        document.add(new Paragraph("Name: ________________________________", normalFont));
+        document.add(new Paragraph("Signature: ___________________________", normalFont));
+
+        document.add(space());
+
+        Paragraph tenant = new Paragraph("TENANT", headerFont);
+        tenant.setAlignment(Element.ALIGN_CENTER);
+        document.add(tenant);
+
+        document.add(new Paragraph("Name: " + tenantName, normalFont));
+        document.add(new Paragraph("Signature: ___________________________", normalFont));
+
+        document.add(space());
+
+        Paragraph thanks = new Paragraph("THANK YOU", titleFont);
+        thanks.setAlignment(Element.ALIGN_CENTER);
+        document.add(thanks);
+
+        document.close();
+
+        JOptionPane.showMessageDialog(this, "Receipt PDF saved successfully.");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error generating receipt PDF: " + e.getMessage());
+    }
+}
+        
+      private Paragraph space() {
+    Paragraph p = new Paragraph(" ");
+    p.setSpacingAfter(8);
+    return p;
+}
+
+private void addTableRow(PdfPTable table, String label, String value, Font labelFont, Font valueFont) {
+    PdfPCell cell1 = new PdfPCell(new Phrase(label, labelFont));
+    PdfPCell cell2 = new PdfPCell(new Phrase(value == null ? "" : value, valueFont));
+
+    cell1.setBorder(PdfPCell.NO_BORDER);
+    cell2.setBorder(PdfPCell.NO_BORDER);
+
+    cell1.setPadding(5);
+    cell2.setPadding(5);
+
+    table.addCell(cell1);
+    table.addCell(cell2);
+}
+
     /**
      * @param args the command line arguments
      */
@@ -805,22 +1246,25 @@ public class Payment extends javax.swing.JFrame {
     private javax.swing.JButton btnRooms;
     private javax.swing.JButton btnTenants;
     private javax.swing.JButton btnlogout;
+    private javax.swing.JButton downloadPaymentReceipt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -838,6 +1282,5 @@ public class Payment extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
