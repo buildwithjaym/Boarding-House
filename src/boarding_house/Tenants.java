@@ -5,6 +5,8 @@
  */
 package boarding_house;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -17,6 +19,11 @@ public class Tenants extends javax.swing.JFrame {
      */
     public Tenants() {
         initComponents();
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+    jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+    jTable1.getColumnModel().getColumn(0).setWidth(0);
+        loadTenantsTable();
+        loadRoomsToComboBox();
     }
 
     /**
@@ -183,15 +190,17 @@ public class Tenants extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Name", "Contact", "Address", "Gender", "Age", "Room_ID", "Check-in", "Check_out", "Months STayed", "Payment Status"
+                "ID", "Name", "Contact", "Address", "Gender", "Age", "Room_ID", "Check-in", "Check_out", "Months STayed", "Payment Status"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 1000, 230));
@@ -254,20 +263,40 @@ public class Tenants extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(0, 153, 0));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setText("ADD TENANTS");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 190, 40));
 
         jButton2.setBackground(new java.awt.Color(0, 102, 102));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setText("UPDATE TENANT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 190, 40));
 
         jButton3.setBackground(new java.awt.Color(153, 0, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton3.setText("DELETE TENANT");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 180, 190, 40));
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton4.setText("CLEAR");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 180, 190, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 1030, 520));
@@ -322,6 +351,390 @@ public class Tenants extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        addTenant();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        deleteTenant();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       updateTenant();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+                                        
+    int row = jTable1.getSelectedRow();
+
+    if (row >= 0) {
+        try {
+            String name = jTable1.getValueAt(row, 1).toString();
+            String contact = jTable1.getValueAt(row, 2).toString();
+            String address = jTable1.getValueAt(row, 3).toString();
+            String gender = jTable1.getValueAt(row, 4).toString();
+            int age = Integer.parseInt(jTable1.getValueAt(row, 5).toString());
+            String roomId = jTable1.getValueAt(row, 6).toString();
+
+            java.util.Date checkIn =
+                    java.sql.Date.valueOf(jTable1.getValueAt(row, 7).toString());
+
+            java.util.Date checkOut =
+                    java.sql.Date.valueOf(jTable1.getValueAt(row, 8).toString());
+
+            int months = Integer.parseInt(jTable1.getValueAt(row, 9).toString());
+            String payment = jTable1.getValueAt(row, 10).toString();
+
+            jTextField1.setText(name);
+            jTextField3.setText(contact);
+            jTextField2.setText(address);
+            jComboBox1.setSelectedItem(gender);
+            jSpinner1.setValue(age);
+            jComboBox2.setSelectedItem(roomId);
+            jDateChooser1.setDate(checkIn);
+            jDateChooser2.setDate(checkOut);
+            jTextField4.setText(String.valueOf(months));
+            jComboBox3.setSelectedItem(
+                    payment.substring(0, 1).toUpperCase() + payment.substring(1)
+            );
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading row: " + e.getMessage());
+        }
+    }
+
+
+    }//GEN-LAST:event_jTable1MouseClicked
+    private void logHistory(int tenantId, String action, String details) {
+    try {
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "INSERT INTO history (tenant_id, action_type, details) VALUES (?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setInt(1, tenantId);
+        pst.setString(2, action);
+        pst.setString(3, details);
+
+        pst.executeUpdate();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "History Error: " + e.getMessage());
+    }
+}
+    private int calculateMonths(java.util.Date checkIn, java.util.Date checkOut) {
+    java.time.LocalDate in = new java.sql.Date(checkIn.getTime()).toLocalDate();
+    java.time.LocalDate out = new java.sql.Date(checkOut.getTime()).toLocalDate();
+
+    return (int) java.time.temporal.ChronoUnit.MONTHS.between(in, out);
+}
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       clearFields();
+    }//GEN-LAST:event_jButton4ActionPerformed
+    
+    private void clearFields() {
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField4.setText("");
+    jComboBox1.setSelectedIndex(0);
+    jComboBox2.setSelectedIndex(0);
+    jComboBox3.setSelectedIndex(0);
+    jSpinner1.setValue(0);
+    jDateChooser1.setDate(null);
+    jDateChooser2.setDate(null);
+}
+    private void addTenant() {
+    try {
+        String name = jTextField1.getText().trim();
+        String contact = jTextField3.getText().trim();
+        String address = jTextField2.getText().trim();
+        String gender = jComboBox1.getSelectedItem().toString();
+        String payment = jComboBox3.getSelectedItem().toString().toLowerCase();
+
+        if (name.isEmpty() || contact.isEmpty() || address.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all text fields.");
+            return;
+        }
+
+        if (gender.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select gender.");
+            return;
+        }
+
+        if (jComboBox2.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a room.");
+            return;
+        }
+
+        if (jComboBox3.getSelectedItem().toString().equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select payment status.");
+            return;
+        }
+
+        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select check-in and check-out dates.");
+            return;
+        }
+
+        int age = (int) jSpinner1.getValue();
+
+        if (age <= 0) {
+            JOptionPane.showMessageDialog(this, "Age must be greater than 0.");
+            return;
+        }
+
+        int roomId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
+
+        java.util.Date checkIn = jDateChooser1.getDate();
+        java.util.Date checkOut = jDateChooser2.getDate();
+
+        if (!checkOut.after(checkIn)) {
+            JOptionPane.showMessageDialog(this, "Check-out date must be after check-in date.");
+            return;
+        }
+
+        int months = calculateMonths(checkIn, checkOut);
+        jTextField4.setText(String.valueOf(months));
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String checkRoom = "SELECT occupied, capacity FROM rooms WHERE id=?";
+        PreparedStatement pstCheck = conn.prepareStatement(checkRoom);
+        pstCheck.setInt(1, roomId);
+        ResultSet rsCheck = pstCheck.executeQuery();
+
+        if (rsCheck.next()) {
+            int occupied = rsCheck.getInt("occupied");
+            int capacity = rsCheck.getInt("capacity");
+
+            if (occupied >= capacity) {
+                JOptionPane.showMessageDialog(this, "Room is FULL!");
+                return;
+            }
+        }
+
+        String sql = "INSERT INTO tenants "
+                + "(name, contact, address, gender, age, room_id, check_in, check_out, months_stayed, payment_status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+
+        pst.setString(1, name);
+        pst.setString(2, contact);
+        pst.setString(3, address);
+        pst.setString(4, gender);
+        pst.setInt(5, age);
+        pst.setInt(6, roomId);
+        pst.setDate(7, new java.sql.Date(checkIn.getTime()));
+        pst.setDate(8, new java.sql.Date(checkOut.getTime()));
+        pst.setInt(9, months);
+        pst.setString(10, payment);
+
+        pst.executeUpdate();
+
+        ResultSet keys = pst.getGeneratedKeys();
+        int tenantId = 0;
+
+        if (keys.next()) {
+            tenantId = keys.getInt(1);
+        }
+
+        PreparedStatement updateRoom = conn.prepareStatement(
+                "UPDATE rooms SET occupied = occupied + 1 WHERE id=?"
+        );
+        updateRoom.setInt(1, roomId);
+        updateRoom.executeUpdate();
+
+        logHistory(tenantId, "ADD", "Added tenant " + name + " to room " + roomId);
+
+        JOptionPane.showMessageDialog(this, "Tenant Added Successfully!");
+
+        loadTenantsTable();
+        loadRoomsToComboBox();
+        clearFields();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error adding tenant: " + e.getMessage());
+    }
+}
+    
+    private void loadTenantsTable() {
+    try {
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT * FROM tenants ORDER BY id DESC";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("contact"),
+                rs.getString("address"),
+                rs.getString("gender"),
+                rs.getInt("age"),
+                rs.getInt("room_id"),
+                rs.getDate("check_in"),
+                rs.getDate("check_out"),
+                rs.getInt("months_stayed"),
+                rs.getString("payment_status")
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading tenants: " + e.getMessage());
+    }
+}
+    private void deleteTenant() {
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Select a row first!");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to delete this tenant?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    try {
+        int tenantId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+        String name = jTable1.getValueAt(selectedRow, 1).toString();
+        int roomId = Integer.parseInt(jTable1.getValueAt(selectedRow, 6).toString());
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        logHistory(tenantId, "DELETE", "Deleted tenant " + name + " from room " + roomId);
+
+        String sql = "DELETE FROM tenants WHERE id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, tenantId);
+        pst.executeUpdate();
+
+        PreparedStatement updateRoom = conn.prepareStatement(
+                "UPDATE rooms SET occupied = occupied - 1 WHERE id=? AND occupied > 0"
+        );
+        updateRoom.setInt(1, roomId);
+        updateRoom.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Deleted Successfully!");
+
+        loadTenantsTable();
+        loadRoomsToComboBox();
+        clearFields();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error deleting tenant: " + e.getMessage());
+    }
+}  
+    private void loadRoomsToComboBox() {
+    try {
+        jComboBox2.removeAllItems();
+        jComboBox2.addItem("Select");
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        // Only show available rooms
+        String sql = "SELECT id FROM rooms WHERE status = 'Available'";
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        java.sql.ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            jComboBox2.addItem(String.valueOf(rs.getInt("id")));
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading rooms: " + e.getMessage());
+    }
+}
+    private void updateTenant() {
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Select a row first!");
+        return;
+    }
+
+    try {
+        int tenantId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+        int oldRoomId = Integer.parseInt(jTable1.getValueAt(selectedRow, 6).toString());
+
+        String name = jTextField1.getText().trim();
+        String contact = jTextField3.getText().trim();
+        String address = jTextField2.getText().trim();
+        String gender = jComboBox1.getSelectedItem().toString();
+        int age = (int) jSpinner1.getValue();
+        int newRoomId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
+
+        java.util.Date checkIn = jDateChooser1.getDate();
+        java.util.Date checkOut = jDateChooser2.getDate();
+
+        int months = calculateMonths(checkIn, checkOut);
+        String payment = jComboBox3.getSelectedItem().toString().toLowerCase();
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql = "UPDATE tenants SET name=?, contact=?, address=?, gender=?, age=?, room_id=?, "
+                + "check_in=?, check_out=?, months_stayed=?, payment_status=? WHERE id=?";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, name);
+        pst.setString(2, contact);
+        pst.setString(3, address);
+        pst.setString(4, gender);
+        pst.setInt(5, age);
+        pst.setInt(6, newRoomId);
+        pst.setDate(7, new java.sql.Date(checkIn.getTime()));
+        pst.setDate(8, new java.sql.Date(checkOut.getTime()));
+        pst.setInt(9, months);
+        pst.setString(10, payment);
+        pst.setInt(11, tenantId);
+
+        pst.executeUpdate();
+
+        if (oldRoomId != newRoomId) {
+            PreparedStatement minusOldRoom = conn.prepareStatement(
+                    "UPDATE rooms SET occupied = occupied - 1 WHERE id=? AND occupied > 0"
+            );
+            minusOldRoom.setInt(1, oldRoomId);
+            minusOldRoom.executeUpdate();
+
+            PreparedStatement addNewRoom = conn.prepareStatement(
+                    "UPDATE rooms SET occupied = occupied + 1 WHERE id=?"
+            );
+            addNewRoom.setInt(1, newRoomId);
+            addNewRoom.executeUpdate();
+        }
+
+        logHistory(tenantId, "UPDATE", "Updated tenant " + name);
+
+        JOptionPane.showMessageDialog(this, "Updated Successfully!");
+
+        loadTenantsTable();
+        loadRoomsToComboBox();
+        clearFields();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error updating tenant: " + e.getMessage());
+    }
+}
+    
+    
     /**
      * @param args the command line arguments
      */
