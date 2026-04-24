@@ -454,7 +454,6 @@ public class Rooms extends javax.swing.JFrame {
         pst.setString(3, gender.toLowerCase());
 
         pst.executeUpdate();
-        logHistory("ADD ROOM", "Added Room " + roomNumber + " with capacity " + capacity);
 
         JOptionPane.showMessageDialog(this, "Room added successfully.");
 
@@ -530,8 +529,6 @@ public class Rooms extends javax.swing.JFrame {
 
         pst.executeUpdate();
 
-        logHistory("UPDATE ROOM", "Updated Room " + roomNumber + ". Capacity: " + capacity + ", Status: " + status);
-
         JOptionPane.showMessageDialog(this, "Room updated successfully.");
 
         loadRoomsTable();
@@ -578,8 +575,6 @@ public class Rooms extends javax.swing.JFrame {
         pst.setInt(1, roomId);
 
         pst.executeUpdate();
-
-        logHistory("DELETE ROOM", "Deleted Room " + roomNumber);
 
         JOptionPane.showMessageDialog(this, "Room deleted successfully.");
 

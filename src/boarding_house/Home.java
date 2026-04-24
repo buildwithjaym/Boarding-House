@@ -9,13 +9,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
+import java.awt.BorderLayout;
+import java.sql.Connection;
 
 /**
  *
  * @author ASUS
  */
 public class Home extends javax.swing.JFrame {
-    
+    private DefaultTableModel model;
+    private TableRowSorter<DefaultTableModel> sorter;
     /**
      * Creates new form Home
      */
@@ -24,9 +34,24 @@ public class Home extends javax.swing.JFrame {
         loadTotalTenants();
         loadTotalRooms();
         loadTotalAvailableRooms();
-        loadTotalPayment();
+        loadTotalProfit();
+        loadRecentPayments();
+        model = (DefaultTableModel) jTable1.getModel();
+sorter = new TableRowSorter<>(model);
+jTable1.setRowSorter(sorter);
+        loadMonthlyIncomeChart();
     }
 
+    
+     private void searchHistory() {
+    String text = jTextField1.getText();
+
+    if (text.trim().isEmpty()) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,6 +89,9 @@ public class Home extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jPanelChart = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -153,7 +181,7 @@ public class Home extends javax.swing.JFrame {
                 btnlogoutActionPerformed(evt);
             }
         });
-        jPanel1.add(btnlogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 170, -1));
+        jPanel1.add(btnlogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, 170, -1));
 
         btnHistory1.setBackground(new java.awt.Color(255, 204, 255));
         btnHistory1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -169,7 +197,7 @@ public class Home extends javax.swing.JFrame {
         });
         jPanel1.add(btnHistory1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 170, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 520));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 570));
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -186,7 +214,7 @@ public class Home extends javax.swing.JFrame {
         jLabel5.setText("Total Tenants");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        tenant.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        tenant.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         tenant.setForeground(new java.awt.Color(153, 0, 153));
         tenant.setText("0");
         jPanel3.add(tenant, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 30));
@@ -200,7 +228,7 @@ public class Home extends javax.swing.JFrame {
         jLabel6.setText("Total Rooms");
         jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        rooms.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        rooms.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         rooms.setForeground(new java.awt.Color(153, 0, 153));
         rooms.setText("0");
         jPanel4.add(rooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 40, 30));
@@ -214,10 +242,10 @@ public class Home extends javax.swing.JFrame {
         jLabel7.setText("Available Rooms");
         jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        available_room.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        available_room.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         available_room.setForeground(new java.awt.Color(153, 0, 153));
         available_room.setText("0");
-        jPanel5.add(available_room, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 40, 30));
+        jPanel5.add(available_room, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, 90, 30));
 
         jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 190, 130));
 
@@ -225,13 +253,13 @@ public class Home extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(102, 0, 102));
-        jLabel9.setText("Payments");
+        jLabel9.setText("Total Payments");
         jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        payments.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        payments.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         payments.setForeground(new java.awt.Color(153, 0, 153));
         payments.setText("0");
-        jPanel6.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 60, 40));
+        jPanel6.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 170, 40));
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 80, 190, 130));
 
@@ -245,16 +273,44 @@ public class Home extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 860, 190));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 860, 120));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(102, 0, 102));
         jLabel8.setText("Recent Payments");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 520));
+        jLabel10.setText("Search:");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 410, -1, -1));
 
-        setSize(new java.awt.Dimension(1145, 558));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 410, 230, -1));
+
+        javax.swing.GroupLayout jPanelChartLayout = new javax.swing.GroupLayout(jPanelChart);
+        jPanelChart.setLayout(jPanelChartLayout);
+        jPanelChartLayout.setHorizontalGroup(
+            jPanelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+        );
+        jPanelChartLayout.setVerticalGroup(
+            jPanelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanelChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 800, 150));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 910, 570));
+
+        setSize(new java.awt.Dimension(1145, 607));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -299,6 +355,14 @@ public class Home extends javax.swing.JFrame {
         History object = new History();
         object.setVisible(true);
     }//GEN-LAST:event_btnHistory1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        searchHistory();
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     public void loadTotalTenants() {
     Connection conn = null;
@@ -396,35 +460,102 @@ public class Home extends javax.swing.JFrame {
     }
 }
     
-    public void loadTotalPayment() {
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-
-    try {
-        conn = DBConnection.getConnection();
-
-        String sql = "SELECT COUNT(*) AS total_payments FROM payments";
-
-        pstmt = conn.prepareStatement(sql);
-        rs = pstmt.executeQuery();
+   public void loadTotalProfit() {
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(
+                 "SELECT SUM(amount) AS total_profit FROM payments WHERE status='paid'"
+         );
+         ResultSet rs = pstmt.executeQuery()) {
 
         if (rs.next()) {
-            int totalPayments = rs.getInt("total_payments");
-            System.out.println("Total Payments: " + totalPayments);
-            payments.setText(String.valueOf(totalPayments));
+            double total = rs.getDouble("total_profit");
+            payments.setText("₱ " + String.format("%.2f", total));
         }
+
     } catch (SQLException e) {
         e.printStackTrace();
-    } finally {
-       
-        try {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+    }
+}
+   
+   
+   public void loadRecentPayments() {
+    try {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT p.payment_date, t.name, r.room_number, p.amount "
+                + "FROM payments p "
+                + "JOIN tenants t ON p.tenant_id = t.id "
+                + "LEFT JOIN rooms r ON t.room_id = r.id "
+                + "ORDER BY p.payment_date DESC LIMIT 10";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        java.text.SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("MMMM dd, yyyy");
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                sdf.format(rs.getDate("payment_date")),
+                rs.getString("name"),
+                rs.getString("room_number") == null ? "N/A" : rs.getString("room_number"),
+                "₱ " + String.format("%.2f", rs.getDouble("amount"))
+            });
         }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading recent payments: " + e.getMessage());
+    }
+}
+   
+   
+   private void loadMonthlyIncomeChart() {
+    try {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT MONTHNAME(payment_date) AS month_name, "
+                + "MONTH(payment_date) AS month_number, "
+                + "SUM(amount) AS total_income "
+                + "FROM payments "
+                + "WHERE status = 'paid' "
+                + "AND YEAR(payment_date) = YEAR(CURDATE()) "
+                + "GROUP BY MONTH(payment_date), MONTHNAME(payment_date) "
+                + "ORDER BY month_number";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            dataset.addValue(
+                    rs.getDouble("total_income"),
+                    "Income",
+                    rs.getString("month_name")
+            );
+        }
+
+        JFreeChart chart = ChartFactory.createLineChart(
+                "Monthly Income",
+                "Month",
+                "Income",
+                dataset
+        );
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(860, 180));
+
+        jPanelChart.removeAll();
+        jPanelChart.setLayout(new BorderLayout());
+        jPanelChart.add(chartPanel, BorderLayout.CENTER);
+        jPanelChart.revalidate();
+        jPanelChart.repaint();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading monthly income chart: " + e.getMessage());
     }
 }
     /**
@@ -471,6 +602,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton btnTenants;
     private javax.swing.JButton btnlogout;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -485,9 +617,11 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelChart;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel payments;
     private javax.swing.JLabel rooms;
     private javax.swing.JLabel tenant;

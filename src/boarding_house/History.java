@@ -6,18 +6,37 @@
 package boarding_house;
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author ASUS
  */
 public class History extends javax.swing.JFrame {
-
+    private DefaultTableModel model;
+private TableRowSorter<DefaultTableModel> sorter;
     /**
      * Creates new form History
      */
     public History() {
         initComponents();
+        loadHistoryTable();
+        model = (DefaultTableModel) jTable1.getModel();
+sorter = new TableRowSorter<>(model);
+jTable1.setRowSorter(sorter);
     }
 
     /**
@@ -41,10 +60,14 @@ public class History extends javax.swing.JFrame {
         btnlogout = new javax.swing.JButton();
         btnHistory1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -155,25 +178,50 @@ public class History extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 153, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 0, 102));
-        jLabel4.setText("History");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 950, 10));
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Tenant Name", "Times Paid", "Date", "Activity"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 730, 240));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 880, 310));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 750, 510));
+        jLabel5.setText("View each tenant’s latest activity and payment history summary.");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+
+        jLabel6.setText("Search:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, -1, -1));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 230, -1));
+
+        jLabel7.setText("Search Tenant or Activity.");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 130, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 0, 102));
+        jLabel8.setText("Tenant Activity Overview");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(0, 153, 51));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton1.setText("Download PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 900, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -219,6 +267,148 @@ public class History extends javax.swing.JFrame {
         object.setVisible(true);
     }//GEN-LAST:event_btnHistory1ActionPerformed
 
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        searchHistory();
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        exportHistoryToPDF();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    private void exportHistoryToPDF() {
+    try {
+        if (jTable1.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No history records to export.");
+            return;
+        }
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save History Report");
+        chooser.setSelectedFile(new java.io.File("BoardingHouse_History_Report.pdf"));
+
+        int userSelection = chooser.showSaveDialog(this);
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "History PDF was not saved.");
+            return;
+        }
+
+        String filePath = chooser.getSelectedFile().getAbsolutePath();
+
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+        document.open();
+
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
+        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+
+        Paragraph title = new Paragraph("BOARDING HOUSE HISTORY REPORT", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(20);
+        document.add(title);
+
+        PdfPTable table = new PdfPTable(jTable1.getColumnCount());
+        table.setWidthPercentage(100);
+
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            PdfPCell cell = new PdfPCell(new Phrase(jTable1.getColumnName(i), headerFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(5);
+            table.addCell(cell);
+        }
+
+        for (int row = 0; row < jTable1.getRowCount(); row++) {
+            for (int col = 0; col < jTable1.getColumnCount(); col++) {
+                Object value = jTable1.getValueAt(row, col);
+
+                PdfPCell cell = new PdfPCell(
+                        new Phrase(value == null ? "" : value.toString(), normalFont)
+                );
+
+                cell.setPadding(4);
+                table.addCell(cell);
+            }
+        }
+
+        document.add(table);
+        document.close();
+
+        JOptionPane.showMessageDialog(this, "History PDF exported successfully.");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error exporting history PDF: " + e.getMessage());
+    }
+}
+    
+    private void loadHistoryTable() {
+    try {
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) jTable1.getModel();
+
+        model.setRowCount(0);
+
+        java.sql.Connection conn = DBConnection.getConnection();
+
+        String sql =
+                "SELECT t.id, t.name, "
+                + "COUNT(DISTINCT p.id) AS times_paid, "
+                + "MAX(h.action_date) AS latest_date, "
+                + "(SELECT h2.details FROM history h2 "
+                + " WHERE h2.tenant_id = t.id "
+                + " ORDER BY h2.action_date DESC LIMIT 1) AS latest_activity "
+                + "FROM tenants t "
+                + "LEFT JOIN payments p ON p.tenant_id = t.id "
+                + "LEFT JOIN history h ON h.tenant_id = t.id "
+                + "GROUP BY t.id, t.name "
+                + "ORDER BY latest_date DESC";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        java.text.SimpleDateFormat sdf =
+                new java.text.SimpleDateFormat("MMMM dd, yyyy hh:mm a");
+
+        while (rs.next()) {
+            int timesPaid = rs.getInt("times_paid");
+
+            String paymentText;
+            if (timesPaid == 0) {
+                paymentText = "No payments";
+            } else if (timesPaid == 1) {
+                paymentText = "1 time";
+            } else {
+                paymentText = timesPaid + " times";
+            }
+
+            java.sql.Timestamp latestDate = rs.getTimestamp("latest_date");
+
+            model.addRow(new Object[]{
+                rs.getString("name"),
+                paymentText,
+                latestDate == null ? "No activity yet" : sdf.format(latestDate),
+                rs.getString("latest_activity") == null ? "No activity yet" : rs.getString("latest_activity")
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
+    }
+}
+    
+    private void searchHistory() {
+    String text = jTextField1.getText();
+
+    if (text.trim().isEmpty()) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -261,15 +451,19 @@ public class History extends javax.swing.JFrame {
     private javax.swing.JButton btnRooms;
     private javax.swing.JButton btnTenants;
     private javax.swing.JButton btnlogout;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
