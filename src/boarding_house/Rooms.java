@@ -319,7 +319,8 @@ public class Rooms extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        int row = jTable1.getSelectedRow();
+                                   
+    int row = jTable1.getSelectedRow();
 
     if (row >= 0) {
         try {
@@ -327,14 +328,19 @@ public class Rooms extends javax.swing.JFrame {
             jSpinner1.setValue(Integer.parseInt(jTable1.getValueAt(row, 2).toString()));
 
             String gender = jTable1.getValueAt(row, 3).toString();
+            String status = jTable1.getValueAt(row, 5).toString();
+
             jComboBox1.setSelectedItem(
                     gender.substring(0, 1).toUpperCase() + gender.substring(1)
             );
+
+            jComboBox2.setSelectedItem(status);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error selecting room: " + e.getMessage());
         }
     }
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -355,16 +361,15 @@ public class Rooms extends javax.swing.JFrame {
 
     
     
-    private void logHistory(String module, String action, String details) {
+    private void logHistory(String action, String details) {
     try {
         java.sql.Connection conn = DBConnection.getConnection();
 
-        String sql = "INSERT INTO history (tenant_id, module, action_type, details) VALUES (NULL, ?, ?, ?)";
+        String sql = "INSERT INTO history (tenant_id, action_type, details) VALUES (NULL, ?, ?)";
         PreparedStatement pst = conn.prepareStatement(sql);
 
-        pst.setString(1, module);
-        pst.setString(2, action);
-        pst.setString(3, details);
+        pst.setString(1, action);
+        pst.setString(2, details);
 
         pst.executeUpdate();
 
@@ -404,6 +409,7 @@ public class Rooms extends javax.swing.JFrame {
     jTextField1.setText("");
     jSpinner1.setValue(0);
     jComboBox1.setSelectedIndex(0);
+    jComboBox2.setSelectedIndex(0);
     jTable1.clearSelection();
 }
     private void addRoom() {
@@ -448,8 +454,7 @@ public class Rooms extends javax.swing.JFrame {
         pst.setString(3, gender.toLowerCase());
 
         pst.executeUpdate();
-
-        logHistory("Rooms", "ADD", "Added Room " + roomNumber + " with capacity " + capacity);
+        logHistory("ADD ROOM", "Added Room " + roomNumber + " with capacity " + capacity);
 
         JOptionPane.showMessageDialog(this, "Room added successfully.");
 
@@ -525,7 +530,7 @@ public class Rooms extends javax.swing.JFrame {
 
         pst.executeUpdate();
 
-        logHistory("Rooms", "UPDATE", "Updated Room " + roomNumber + ". Capacity: " + capacity + ", Status: " + status);
+        logHistory("UPDATE ROOM", "Updated Room " + roomNumber + ". Capacity: " + capacity + ", Status: " + status);
 
         JOptionPane.showMessageDialog(this, "Room updated successfully.");
 
@@ -574,7 +579,7 @@ public class Rooms extends javax.swing.JFrame {
 
         pst.executeUpdate();
 
-        logHistory("Rooms", "DELETE", "Deleted Room " + roomNumber);
+        logHistory("DELETE ROOM", "Deleted Room " + roomNumber);
 
         JOptionPane.showMessageDialog(this, "Room deleted successfully.");
 
